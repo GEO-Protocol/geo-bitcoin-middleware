@@ -1,0 +1,19 @@
+{
+  "name": "middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bitcoind-rpc": "^0.7.2",
+    "bitcoinjs-lib": "^4.0.2",
+    "bitcore-rpc": "^0.8.7",
+    "dhttp": "^3.0.1",
+    "express": "^4.16.4",
+    "loadsh": "0.0.3"
+  }
+}

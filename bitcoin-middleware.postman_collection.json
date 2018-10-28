@@ -1,0 +1,660 @@
+{
+	"info": {
+		"_postman_id": "92425a08-2efb-4904-97ca-071997d4500a",
+		"name": "bitcoin-middleware",
+		"description": "# Install\r\n1. npm i\r\n2. copy and rename \"connection-config example.json\" to \"connection-config.json\"\r\n3. change for self\r\n...\"protocol\": \"http\",\r\n...\"user\": \"u\", \t\t\t\t\t\t- username like for  bitcoind -rpcuser=\r\n...\"pass\": \"p\", \t\t\t\t\t\t- password like for  bitcoind -rpcpassword=\r\n...\"host\": \"127.0.0.1\",\r\n...\"port\": \"18443\"\t\t\t\t\t\t- port for network 8332 mainet, 18332 testnet, 18443 regtes\r\n...\"network_name\" : \"regtest\"\t\t\t- network name mainet, testnet, regtes\r\n...\"faucet_wif_fortest\" : \"cT8G...fp\", \t- faucet witch ballance for test\r\n...\"own_wif\" : \"cRJSbHx....yLsq\", \t\t- wallet for\r\n\r\n# Launch bitcoind for example \r\nbitcoind -regtest -rpcuser=u -rpcpassword=p \r\n\r\n# Useful commands for bitcoin-cli regtest\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p generate 5\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p generatetoaddress 10 2MwXRZ1TswYe1X6JuCjoo4N4ZALNHGkkTUV\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p getbalance\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p getblockcount\r\n\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p generatetoaddress 10 2MuVXUPM3FEyqyKUnLDexmQbCc5MBPBZ7Wg\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p sendtoaddress mhX9kiCCgTHZxfwPcsKFwrxysbYqVGUtXY 2.5151\r\n\r\nfor new addres use importaddress before listunspent\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p importaddress 2MwuRr82gci6kdTh22TQsDkfSwnEcBBjzMD\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p listunspent 0 99999999 [\\\"mhX9kiCCgTHZxfwPcsKFwrxysbYqVGUtXY\\\"]\r\n\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p decoderawtransaction 4b9b519646a932346c73fa2ae7f7a7ef45db2cf5a83de4f454bf7cc0a915ec36\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p validateaddress 2N99SDNtYjxBYTVbeEtt1XnExHs9H8Nmcdp\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p getaddressinfo 2MuVXUPM3FEyqyKUnLDexmQbCc5MBPBZ7Wg\r\nbitcoin-cli -regtest -rpcuser=u -rpcpassword=p getrawtransaction 462aa6ab4a61e73500f2be7031bba2160b50f530bf5db81bca8cc150a8ef92fe 1\r\n\r\n# Tests\r\nnode TestMiddleware.js\r\n\r\n# Launching REST server\r\nnode app.js",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "open channel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/channel/open?pubKeyBob=03d88fe278096be6e516a472c7ccc869763903fd0c398ae2c3481e7b84705d2d35&value=10000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"channel",
+						"open"
+					],
+					"query": [
+						{
+							"key": "pubKeyBob",
+							"value": "03d88fe278096be6e516a472c7ccc869763903fd0c398ae2c3481e7b84705d2d35",
+							"description": "public key for second account"
+						},
+						{
+							"key": "value",
+							"value": "10000",
+							"description": "deposit size for opened channel"
+						}
+					]
+				},
+				"description": "For successful open channel with Bob, Alice must have unspent on sums \"value\"+\"default fee\". \r\nChannel will be open with balance equal \"value\".\r\n\r\nIf successful, returns:\r\n\t\"txid\" - id of transaction in blockchain; \"pubKey1\",\"pubKey2\" - public keys, own and for Bob; \"channel_balance\" - deposit of channel;\r\n\r\nPossible errors:\r\n\t\"can't open channel, low balance\" - need unspent \"value\"+\"default fee\"; \r\n\t\"Expected property \"pubkeys.1\" of type isPoint, got Buffer\" - check input parameter \"pubKeyBob\";\r\n\t\"Expected property \"1\" of type Satoshi\" - check input parameter \"value\";\r\n\t\"400\" - check input parameters, must have \"pubKeyBob\", \"value\";"
+			},
+			"response": [
+				{
+					"name": "open channel",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/channel/open?pubKeyBob=0232c8cfc653d284641d1c37d48e7edd76f301b37a36a39da20c74339854b05357&value=10000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"channel",
+								"open"
+							],
+							"query": [
+								{
+									"key": "pubKeyBob",
+									"value": "0232c8cfc653d284641d1c37d48e7edd76f301b37a36a39da20c74339854b05357",
+									"description": "public key for second account"
+								},
+								{
+									"key": "value",
+									"value": "10000",
+									"description": "deposit sice for opened chanel\n"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "256"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"100-JHuJeiJv0mf5yZ7LmIWxCQZnXG0\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 13:07:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"txid\": \"04d6e369cf571c8a074872232c00596d73738f95926919e692704d8460c63111\",\n    \"pubKey1\": \"03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae\",\n    \"pubKey2\": \"0232c8cfc653d284641d1c37d48e7edd76f301b37a36a39da20c74339854b05357\",\n    \"channel_balance\": 10000\n}"
+				}
+			]
+		},
+		{
+			"name": "create withdraw transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/channel/coop_close/create_tx?pubKey1=03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae&pubKey2=02c29518e4f46e2d02e4c1061972655b9b7ddc8d295605419f52f3eb24a7de0559&channel_balance=10000&value1=5000&value2=2500",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"channel",
+						"coop_close",
+						"create_tx"
+					],
+					"query": [
+						{
+							"key": "pubKey1",
+							"value": "03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae",
+							"description": "public key obtained on 'open channel'"
+						},
+						{
+							"key": "pubKey2",
+							"value": "02c29518e4f46e2d02e4c1061972655b9b7ddc8d295605419f52f3eb24a7de0559",
+							"description": "public key obtained on 'open channel'"
+						},
+						{
+							"key": "channel_balance",
+							"value": "10000",
+							"description": "all balance of channel"
+						},
+						{
+							"key": "value1",
+							"value": "5000",
+							"description": "will sending to address submission pubKey1"
+						},
+						{
+							"key": "value2",
+							"value": "2500",
+							"description": "will sending to address submission pubKey2"
+						}
+					]
+				},
+				"description": "Making withdraw to addresses submission pubKey1 and pubKey2\r\n\r\nIf successful, returns: \r\n\traw hex transaction signed Alice;\r\n\t\r\nPossible errors: \r\n\t\"400\" - check input parameters, must have \"pubKey1\", \"pubKey2\", \"channel_balance\", \"value1\", \"value1\";\r\n \t\"not implement, in transaction 'multisig' many utxo inputs\" - open new channel Alice/Bob or spent many utxo to one;"
+			},
+			"response": [
+				{
+					"name": "create withdraw transaction",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/channel/coop_close/create_tx?pubKey1=03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae&pubKey2=02c29518e4f46e2d02e4c1061972655b9b7ddc8d295605419f52f3eb24a7de0559&channel_balance=10000&value1=5000&value2=2500",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"channel",
+								"coop_close",
+								"create_tx"
+							],
+							"query": [
+								{
+									"key": "pubKey1",
+									"value": "03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae",
+									"description": "public key obtained on 'open channel'"
+								},
+								{
+									"key": "pubKey2",
+									"value": "02c29518e4f46e2d02e4c1061972655b9b7ddc8d295605419f52f3eb24a7de0559",
+									"description": "public key obtained on 'open channel'"
+								},
+								{
+									"key": "channel_balance",
+									"value": "10000",
+									"description": "all balance of channel"
+								},
+								{
+									"key": "value1",
+									"value": "5000",
+									"description": "will sending to address submission pubKey1"
+								},
+								{
+									"key": "value2",
+									"value": "2500",
+									"description": "will sending to address submission pubKey2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "598"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"256-4HihYwEH5Dgh2b+0A0By1Vw2S1Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 13:22:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "02000000000101ebdc85d61507addc5782df3388b42a0d9e2159c037da84f74497fb661bafef310000000023220020fe917ade3e3d73b6f3c04e9e60a2f3ebff40baa179ae53b140c07f813909691cffffffff02881300000000000017a9141eaab8d10e4cca10f6c229263698e8bc12fd62e487c40900000000000017a9142e09c82145748d55613e61535ca7a3e08e7be335870400473044022073786be66567e471eae139cbc82d3bb6c2b2d9ad4711879c64e021a40d2c58dc0220237741975d6a213de868f27daef8085bb673444429b9dda7229fe837a10073b4010047522103972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae2102c29518e4f46e2d02e4c1061972655b9b7ddc8d295605419f52f3eb24a7de055952ae00000000"
+				}
+			]
+		},
+		{
+			"name": "sign withdraw transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/channel/coop_close/sign_tx?pubKey1=03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae&pubKey2=03d88fe278096be6e516a472c7ccc869763903fd0c398ae2c3481e7b84705d2d35&channel_balance=10000&hexTx=02000000000101086c0c21e19a189e5f2a3853b037d52ecd9f4b0db5162c0c97b4531112f241bd0000000023220020f2440d1d918c23fb456df9d9a8afc9472602916d4d0a7e7f983b3288d435dd92ffffffff02881300000000000017a9141eaab8d10e4cca10f6c229263698e8bc12fd62e487c40900000000000017a914355400674f40bb3d27c9d2623a2d8cb67684b1dd870400483045022100ab71decbe8fcf47a4e5e3a2f75a571f24dfd158c31e851d2a747ee2327473b640220578215cbc5705d81ea070bc04418d9baf00c8d06bf4288c482ec028295edb790010047522103972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae21029480542b6b3b443a85ececeba68d3926235a3735b623168d29b57d9267a7395552ae00000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"channel",
+						"coop_close",
+						"sign_tx"
+					],
+					"query": [
+						{
+							"key": "pubKey1",
+							"value": "03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae",
+							"description": "public key obtained on 'open channel'"
+						},
+						{
+							"key": "pubKey2",
+							"value": "03d88fe278096be6e516a472c7ccc869763903fd0c398ae2c3481e7b84705d2d35",
+							"description": "public key obtained on 'open channel'"
+						},
+						{
+							"key": "channel_balance",
+							"value": "10000",
+							"description": "all balance of channel"
+						},
+						{
+							"key": "hexTx",
+							"value": "02000000000101086c0c21e19a189e5f2a3853b037d52ecd9f4b0db5162c0c97b4531112f241bd0000000023220020f2440d1d918c23fb456df9d9a8afc9472602916d4d0a7e7f983b3288d435dd92ffffffff02881300000000000017a9141eaab8d10e4cca10f6c229263698e8bc12fd62e487c40900000000000017a914355400674f40bb3d27c9d2623a2d8cb67684b1dd870400483045022100ab71decbe8fcf47a4e5e3a2f75a571f24dfd158c31e851d2a747ee2327473b640220578215cbc5705d81ea070bc04418d9baf00c8d06bf4288c482ec028295edb790010047522103972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae21029480542b6b3b443a85ececeba68d3926235a3735b623168d29b57d9267a7395552ae00000000",
+							"description": "raw transaction in hex, signed Alice\n"
+						}
+					]
+				},
+				"description": "Sign withdraw transaction and send it to blockchain\r\n\r\nIf successful, returns: \r\n\ttransaction id in blockchain;\r\n\t\r\npossible errors: \r\n\t\"400\" - check input parameters, must have \"pubKey1\", \"pubKey2\", \"channel_balance\", \"hexTx\"; \r\n\t\"not implement, in transaction 'multisig' many utxo inputs\" - open new channel Alice/Bob or spent many utxo to one; \r\n\t\"Signature already exists\" - wrong repeat of request; \r\n\t\"Inconsistent redeemScript\" - check \"pubKey1\" and \"pubKey2\";"
+			},
+			"response": [
+				{
+					"name": "sign withdraw transaction",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/channel/coop_close/sign_tx?pubKey1=03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae&pubKey2=02acda52d0ad5062af3f0b307eac70a5eed2b85c80583a63c66127a3cf35238783&channel_balance=10000&hexTx=020000000001015c054cb6cfd70b8c436d5fa36b24d4f9db65d374d5b733d47e1264ca6340a41900000000232200208fdb57962efeb51166ddcd11b266a5516fe25db32cb904fa3e2d98fbecbb88a4ffffffff02881300000000000017a9141eaab8d10e4cca10f6c229263698e8bc12fd62e487c40900000000000017a9147804ac196428becba58333e2a7573385428bd006870400473044022054b7e849a6f418f83225b4aae8437dce4d29aa74c3958ff90a8297cca9f4b83702205fb0b85d673cf222166ca40790075fc0d76f065cbca4f2aab249fc9a0be30420010047522103972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae2102acda52d0ad5062af3f0b307eac70a5eed2b85c80583a63c66127a3cf3523878352ae00000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"channel",
+								"coop_close",
+								"sign_tx"
+							],
+							"query": [
+								{
+									"key": "pubKey1",
+									"value": "03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae",
+									"description": "publik key abtained on 'open chanel'"
+								},
+								{
+									"key": "pubKey2",
+									"value": "02acda52d0ad5062af3f0b307eac70a5eed2b85c80583a63c66127a3cf35238783",
+									"description": "publik key abtained on 'open chanel'"
+								},
+								{
+									"key": "channel_balance",
+									"value": "10000",
+									"description": "all blance of chennel"
+								},
+								{
+									"key": "hexTx",
+									"value": "020000000001015c054cb6cfd70b8c436d5fa36b24d4f9db65d374d5b733d47e1264ca6340a41900000000232200208fdb57962efeb51166ddcd11b266a5516fe25db32cb904fa3e2d98fbecbb88a4ffffffff02881300000000000017a9141eaab8d10e4cca10f6c229263698e8bc12fd62e487c40900000000000017a9147804ac196428becba58333e2a7573385428bd006870400473044022054b7e849a6f418f83225b4aae8437dce4d29aa74c3958ff90a8297cca9f4b83702205fb0b85d673cf222166ca40790075fc0d76f065cbca4f2aab249fc9a0be30420010047522103972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae2102acda52d0ad5062af3f0b307eac70a5eed2b85c80583a63c66127a3cf3523878352ae00000000",
+									"description": "raw transaction in hex, signed Alice\n"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "64"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"40-4bjLOYDzQn1t+sfe5WD8wrZ/NFE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 13:54:39 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "545afac77d378107ebebcd9c0206d501031af2fd79ea7517a42896f62fe603ba"
+				}
+			]
+		},
+		{
+			"name": "confirmations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/confirmations?txid=4a516592b61db9750592dba9c42369c13a714e81b59733c53dfc3ea1fcaffec7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"confirmations"
+					],
+					"query": [
+						{
+							"key": "txid",
+							"value": "4a516592b61db9750592dba9c42369c13a714e81b59733c53dfc3ea1fcaffec7",
+							"description": "transaction id in blockchain\n"
+						}
+					]
+				},
+				"description": "Request confirmations about transaction\r\n\r\nIf successful, returns: \r\n\tcount confirmation;\r\n\t\r\nPossible errors: \r\n\t\"400\" - check input parameters, must have \"txid\";\r\n\t\"Invalid or non-wallet transaction id\" - check input parameter \"txid\", may be transaction not sending to blockchain"
+			},
+			"response": [
+				{
+					"name": "confirmations",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/confirmations?txid=4a516592b61db9750592dba9c42369c13a714e81b59733c53dfc3ea1fcaffec7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"confirmations"
+							],
+							"query": [
+								{
+									"key": "txid",
+									"value": "4a516592b61db9750592dba9c42369c13a714e81b59733c53dfc3ea1fcaffec7",
+									"description": "transaction id in blockchain\n"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2-ItIA+GcNvbPiU6kO7lCYR3yVwj0\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 12:31:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "30"
+				}
+			]
+		},
+		{
+			"name": "getbalance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/getbalance?address=n11sxDKrHv5zwhF8Bgo3jipn1b8ukT3zhP",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"getbalance"
+					],
+					"query": [
+						{
+							"key": "address",
+							"value": "n11sxDKrHv5zwhF8Bgo3jipn1b8ukT3zhP",
+							"description": "target address"
+						}
+					]
+				},
+				"description": "Get the balance of address in satoshi. \r\nWithout parameter - gets balance for address from config.\r\n\r\nIf successful, returns:\r\n\tthe balance of the address;\r\n\r\nPossible errors:\r\n\t\"Invalid Bitcoin address or script\" - check target address;"
+			},
+			"response": [
+				{
+					"name": "getbalance",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/getbalance?address=n11sxDKrHv5zwhF8Bgo3jipn1b8ukT3zhP",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"getbalance"
+							],
+							"query": [
+								{
+									"key": "address",
+									"value": "n11sxDKrHv5zwhF8Bgo3jipn1b8ukT3zhP",
+									"description": "target address\n"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "9"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"9-nOdFRo611XMMxuJAUZz+ABG4IJ8\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 12:53:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "115500000"
+				}
+			]
+		},
+		{
+			"name": "getwalletkeys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/getwalletkeys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"getwalletkeys"
+					]
+				},
+				"description": "Return wallet address, public_key, private_key, wif from config"
+			},
+			"response": [
+				{
+					"name": "getwalletkeys",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/getwalletkeys",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"getwalletkeys"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "273"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"111-EDLdDHuDgRyU7BmhpGIGmxof4L8\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 24 Oct 2018 15:29:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\"address\":\"2Mv3Nn1NVfaYbxeuJBXmNDL9VCA5aGAYPXu\",\"public_key\":\"03972f2929164fbd06e9d946a0eb8355d765ee4043aa07e2a30fc13842eda662ae\",\"private_key\":\"6efc2b3c8f69be12c531c7a023a156851b64e3a6c526429a2e1463470374d3af\",\"wif\":\"cRJSbHx8HgA9qqYjaenza9V7jbhqdRsEtpX98KsXX3J1qWtxyLsq\"}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "39197a5c-ac82-4297-819a-6e2e8e44f293",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8fcff933-d342-4994-bb54-7ad4fcfe4d06",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
